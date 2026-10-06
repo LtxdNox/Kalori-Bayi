@@ -4,26 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
 <meta name="theme-color" content="#059669">
-<title>Kalori Bayi</title>
+<title>Kalori Keluarga</title>
 <style>
   /* ============ Kalori Keluarga — premium mobile UI ============ */
   :root{
     --bg:#F5F7FA; --card:#FFFFFF; --ink:#1A2233; --muted:#6B7689;
     --line:#E8ECF2; --primary:#10B981; --primary-d:#059669;
     --grad:linear-gradient(135deg,#10B981,#059669);
-    --amber:#F59E0B; --rose:#F43F5E; --sky:#0EA5E9; --violet:#8B5CF6;
-    --r:18px; --shadow:0 10px 28px rgba(16,24,40,.08);
-    --tab-h:68px;
+    --amber:#F59E0B; --rose:#F43F5E; --tab-h:68px; --r:18px; 
+    --shadow:0 10px 28px rgba(16,24,40,.08);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
   body{
     margin:0;background:var(--bg);color:var(--ink);
-    font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     font-size:15px;line-height:1.45;overscroll-behavior-y:none;
-    font-variant-numeric:tabular-nums;
   }
-  #app{max-width:480px;margin:0 auto;min-height:100%;position:relative;background:var(--bg)}
+  #app{max-width:480px;margin:0 auto;min-height:100%;position:relative;background:var(--bg); overflow-x:hidden;}
   .muted{color:var(--muted)}
   b,strong{font-weight:700}
 
@@ -36,19 +34,15 @@
     display:flex;align-items:center;justify-content:center;font-size:24px;backdrop-filter:blur(4px)}
   .brand-title{font-weight:800;font-size:17px;letter-spacing:.2px}
   .brand-date{font-size:12px;opacity:.9}
-  .profile-chips{display:flex;gap:8px;overflow-x:auto;padding:10px 18px 14px;scrollbar-width:none}
-  .profile-chips::-webkit-scrollbar{display:none}
-  .chip{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;
-    background:rgba(255,255,255,.18);color:#fff;border:1.5px solid transparent;font-size:13.5px;font-weight:600}
-  .chip.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+  .profile-chips{display:flex;gap:8px;padding:10px 18px 14px}
+  .chip{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:999px;
+    background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.15);font-size:13.5px;font-weight:600}
 
-  /* ---------- views ---------- */
+  /* ---------- views & cards ---------- */
   #views{padding:16px 16px calc(var(--tab-h) + 24px)}
   .view{display:none;animation:fadeUp .25s ease}
   .view.on{display:block}
   @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-  /* ---------- cards ---------- */
   .card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
   .section-head{display:flex;align-items:center;justify-content:space-between;margin:18px 2px 10px}
   .section-head h2{margin:0;font-size:16px;font-weight:800}
@@ -67,40 +61,42 @@
   .ring-pct{font-size:24px;font-weight:800}
   .ring-sub{font-size:11.5px;color:var(--muted)}
   .ring-stats{flex:1;display:flex;flex-direction:column;gap:10px}
-  .ring-stat{display:flex;justify-content:space-between;align-items:baseline;
-    padding-bottom:10px;border-bottom:1px dashed var(--line)}
+  .ring-stat{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;border-bottom:1px dashed var(--line)}
   .ring-stat:last-child{border:0;padding-bottom:0}
   .rs-label{font-size:13px;color:var(--muted)}
   .rs-val{font-size:19px;font-weight:800}
-  .rs-val.good{color:var(--primary-d)} .rs-val.warn{color:var(--amber)}
+  .rs-val.warn{color:var(--amber)}
 
   /* ---------- forms & btns ---------- */
-  .btn-primary{width:100%;border:0;border-radius:14px;padding:14px;background:var(--grad);color:#fff;
-    font-size:15.5px;font-weight:800;box-shadow:0 8px 18px rgba(5,150,105,.35)}
+  .fld{display:block;margin-bottom:12px}
+  .fld>span{display:block;font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+  .fld input{width:100%;padding:14px;border:1.5px solid var(--line);border-radius:13px;
+    font-size:15px;background:#FBFCFE;color:var(--ink);font-family:inherit;font-weight:500}
+  .fld input:focus{outline:0;border-color:var(--primary);box-shadow:0 0 0 3px rgba(16,185,129,.15)}
+  .btn-primary{width:100%;border:0;border-radius:14px;padding:14px;background:var(--primary);color:#fff;
+    font-size:15.5px;font-weight:800;box-shadow:0 8px 18px rgba(16,185,129,.25)}
   .btn-primary:active{transform:scale(.98)}
   .btn-ghost{width:100%;border:1.5px solid var(--line);border-radius:14px;padding:12px;background:#fff;
     font-size:14px;font-weight:700;color:var(--ink);margin-top:8px}
   .btn-ghost:active{background:var(--line)}
 
-  /* ---------- v2.0: rencana & sesi ---------- */
+  /* ---------- grid sesi ---------- */
   .sess-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
   .sess-card{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;
     display:flex;flex-direction:column;gap:4px;align-items:center;min-height:76px;transition:0.2s}
   .sess-card:active{transform:scale(0.95)}
-  .sess-card .s-t{font-weight:800;font-size:13px}
+  .sess-card .s-t{font-weight:800;font-size:13px;text-transform:capitalize}
   .sess-card .s-v{font-size:11.5px;color:var(--muted);line-height:1.45;text-align:center}
   .sess-card .s-v b{color:var(--ink)}
   .sess-card.done{border-color:var(--primary);background:#ECFDF5}
   .sess-card.done .s-v{color:var(--ink)}
+  .mood-btn { padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); font-size: 11px; background: #fff; margin-top:4px; font-weight:700}
 
   /* ---------- more ---------- */
   .more-group{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:14px}
   .more-item{width:100%;display:flex;align-items:center;gap:12px;padding:15px 16px;border:0;background:#fff;
     font-size:14.5px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--line);text-align:left}
-  .more-item:last-child{border:0}
-  .more-item span:first-child{font-size:20px}
   .more-item .chev{margin-left:auto;color:#C3CAD6;font-size:18px}
-  .foot-note{text-align:center;color:var(--muted);font-size:12px;padding:8px 0 4px}
 
   /* ---------- tab bar ---------- */
   #tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
@@ -113,7 +109,44 @@
   #tabbar button.on{color:var(--primary-d)}
   #tabbar button.on span{transform:scale(1.15)}
 
-  .mood-btn { padding: 4px 8px; border-radius: 8px; border: 1px solid var(--line); font-size: 11px; background: #fff; margin-top:4px; font-weight:700}
+  /* ============ WIZARD FULL SCREEN ============ */
+  #wizard{position:fixed;inset:0;background:var(--bg);z-index:55;display:flex;flex-direction:column;
+    transform:translateY(103%);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  #wizard.on{transform:none}
+  .wiz-top{background:var(--grad);color:#fff;border-radius:0 0 24px 24px;
+    padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 16px;box-shadow:0 6px 20px rgba(5,150,105,.35)}
+  .wiz-header-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+  .wiz-title{font-size:17px;font-weight:800}
+  .wiz-dots{display:flex;gap:6px}
+  .wiz-dots i{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.3)}
+  .wiz-dots i.on{background:#fff}
+  #wizBody{flex:1;overflow-y:auto;padding:20px;max-width:480px;width:100%;margin:0 auto}
+  .wiz-nav{display:flex;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));
+    background:#fff;border-top:1px solid var(--line);max-width:480px;width:100%;margin:0 auto}
+  
+  .calc-box{background:#ECFDF5; border-radius:14px; padding:18px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px}
+  .calc-box span{font-weight:800; font-size:15px}
+  .calc-box b{color:var(--primary-d); font-size:22px}
+
+  /* ============ BOTTOM SHEET ============ */
+  #backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);opacity:0;pointer-events:none;transition:opacity .25s;z-index:60}
+  #backdrop.on{opacity:1;pointer-events:auto}
+  #sheet{position:fixed;left:50%;transform:translateX(-50%) translateY(105%);bottom:0;width:100%;max-width:480px;
+    background:#fff;border-radius:24px 24px 0 0;z-index:61;transition:transform .3s cubic-bezier(.2,.8,.2,1);
+    display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px); max-height:80vh;}
+  #sheet.on{transform:translateX(-50%) translateY(0)}
+  .sheet-handle{width:44px;height:5px;border-radius:99px;background:var(--line);margin:10px auto 2px}
+  #sheetBody{padding:8px 18px 22px; overflow-y:auto}
+  .sheet-title{font-size:17px;font-weight:800;margin:6px 0 14px}
+  
+  /* Food List */
+  .food-item{display:flex;align-items:center;gap:10px;padding:12px;border:1.5px solid var(--line);
+    border-radius:13px;background:#fff;font-size:14px; margin-bottom:8px; cursor:pointer}
+  .food-item:active{background:#F5F7FA}
+  .food-cat{font-size:10px;font-weight:800;color:#fff;border-radius:6px;padding:3px 7px;text-transform:uppercase}
+  .cat-pokok{background:var(--primary-d)} .cat-hewani{background:#0EA5E9}
+  .food-item .f-name{flex:1;font-weight:700; color:var(--ink)}
+  .food-item .f-kcal{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -130,22 +163,20 @@
         </div>
       </div>
     </div>
-    <div class="profile-chips" id="profileChips">
-      <div class="chip on">👧 Zahra</div>
+    <div class="profile-chips">
+      <div class="chip">👧 Zahra</div>
     </div>
   </header>
 
   <!-- ======= VIEWS ======= -->
   <main id="views">
-
     <section class="view on" id="view-home">
-      <div class="ring-card" id="ringCard">
+      <div class="ring-card">
         <div class="ring-wrap">
           <svg class="ring" viewBox="0 0 140 140">
             <defs>
               <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#10B981" />
-                <stop offset="100%" stop-color="#059669" />
+                <stop offset="0%" stop-color="#10B981" /><stop offset="100%" stop-color="#059669" />
               </linearGradient>
             </defs>
             <circle class="ring-bg" cx="70" cy="70" r="60"/>
@@ -153,40 +184,31 @@
           </svg>
           <div class="ring-center">
             <div class="ring-pct" id="ringPct">0%</div>
-            <div class="ring-sub" id="ringSub">dari target</div>
+            <div class="ring-sub">dari target</div>
           </div>
         </div>
         <div class="ring-stats">
           <div class="ring-stat"><span class="rs-label">Masuk</span><span class="rs-val" id="kcalIn">0</span></div>
-          <div class="ring-stat" id="targetStat" onclick="editTarget()"><span class="rs-label">Target ✎</span><span class="rs-val" id="kcalTarget">725</span></div>
+          <div class="ring-stat" onclick="editTarget()"><span class="rs-label">Target ✎</span><span class="rs-val" id="kcalTarget">725</span></div>
           <div class="ring-stat"><span class="rs-label">Sisa</span><span class="rs-val warn" id="kcalLeft">725</span></div>
         </div>
       </div>
 
-      <button class="btn-primary" onclick="susunMenu()" style="margin-bottom:12px">🍳 Susun menu masakan hari ini</button>
+      <button class="btn-primary" onclick="openWizard()" style="margin-bottom:12px; border-radius:99px;">🧭 Susun menu utama hari ini</button>
 
-      <div id="sessArea">
-        <div class="section-head"><h2>🍚 Makan Utama (3 Mangkok)</h2><span class="muted" id="sessMealHint" style="font-size:12px; font-weight:bold">0 kkal</span></div>
-        <div class="sess-grid" id="sessMeal">
-          <!-- Render via JS -->
-        </div>
+      <div class="section-head"><h2>🍚 Makan Utama (3 Mangkok)</h2><span class="muted" id="sessMealHint" style="font-size:12px; font-weight:bold">0 kkal</span></div>
+      <div class="sess-grid" id="sessMeal"></div>
 
-        <div class="section-head"><h2>🍼 Susu SGM Gain 100</h2><span class="muted" id="sessMilkHint" style="font-size:12px; font-weight:bold">0/6 Sesi</span></div>
-        <div class="sess-grid" id="sessMilk">
-          <!-- Render via JS -->
-        </div>
-      </div>
+      <div class="section-head"><h2>🍼 Susu SGM Gain 100</h2><span class="muted" id="sessMilkHint" style="font-size:12px; font-weight:bold">0/6 Sesi</span></div>
+      <div class="sess-grid" id="sessMilk"></div>
     </section>
 
     <section class="view" id="view-more">
       <div class="more-group">
         <button class="more-item" onclick="resetDay()"><span>🔄</span>Reset Data Hari Ini<span class="chev">›</span></button>
         <button class="more-item" onclick="copyWA()"><span>📋</span>Salin Laporan WA Dokter<span class="chev">›</span></button>
-        <button class="more-item" onclick="window.print()"><span>📄</span>Cetak PDF Laporan<span class="chev">›</span></button>
       </div>
-      <div class="foot-note">Kalori Keluarga • v2.3.1 Premium Native</div>
     </section>
-
   </main>
 
   <!-- ======= TAB BAR ======= -->
@@ -195,148 +217,163 @@
     <button data-view="view-more" onclick="switchTab('view-more', this)"><span>☰</span>Lainnya</button>
   </nav>
 
+  <!-- ======= FULL SCREEN WIZARD (Sesuai Screenshot Asli) ======= -->
+  <div id="wizard">
+    <div class="wiz-top">
+      <div class="wiz-header-row">
+        <span onclick="closeWizard()" style="font-size:24px; cursor:pointer; line-height:1">✕</span>
+        <div class="wiz-title">Menu utama</div>
+      </div>
+      <div class="wiz-dots"><i class="on"></i><i></i><i></i><i></i></div>
+    </div>
+    
+    <div id="wizBody">
+      <h2 style="margin-top:0; font-size:18px; font-weight:800; color:var(--ink)">Menu utama hari ini</h2>
+      <p style="color:var(--muted); font-size:13.5px; margin-bottom:24px">Tiap sesi bisa beda menu. Kalau 1 masakan cukup untuk semua sesi, biarkan "Sama dengan pagi" tercentang.</p>
+
+      <!-- SESI PAGI -->
+      <div style="font-weight:800; font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:6px">💡 Pagi</div>
+      
+      <label class="fld"><span>NAMA MENU</span><input type="text" id="wName" placeholder="mis. Sup daging"></label>
+      
+      <button class="btn-ghost" onclick="openBahanSheet()" style="margin-bottom:16px; border:2px dashed #C3CAD6; color:var(--ink)">+ Tambah bahan</button>
+      <div id="wBahanList" style="margin-bottom:16px"></div>
+
+      <div class="calc-box">
+        <span>Per porsi</span>
+        <b id="wTotalKcal">≈ 0 kkal</b>
+      </div>
+
+      <label class="fld"><span>BERAPA ML? (TAKARAN MANGKOK)</span><input type="number" id="wMl" value="90" oninput="hitungWiz()"></label>
+
+      <div class="calc-box">
+        <span>Per ml</span>
+        <b id="wPerMl">≈ 0 kkal</b>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin:-6px 0 24px">Pagi <span id="wHintMl">90</span> ml ≈ <span id="wHintTotal">0</span> kkal. Sisa di panci yang dibuang tidak ikut dihitung.</p>
+
+      <!-- SESI SIANG -->
+      <div style="font-weight:800; font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:6px">💡 Siang</div>
+      <label style="display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; margin-bottom:24px">
+        <input type="checkbox" id="wSameSiang" checked style="width:20px;height:20px;accent-color:var(--primary)"> Sama dengan pagi
+      </label>
+
+      <!-- SESI MALAM -->
+      <div style="font-weight:800; font-size:15px; margin-bottom:12px; display:flex; align-items:center; gap:6px">💡 Malam</div>
+      <label style="display:flex; align-items:center; gap:10px; font-weight:700; font-size:14px; margin-bottom:30px">
+        <input type="checkbox" id="wSameMalam" checked style="width:20px;height:20px;accent-color:var(--primary)"> Sama dengan pagi
+      </label>
+
+    </div>
+    
+    <div class="wiz-nav">
+      <button class="btn-primary" onclick="simpanWizard()" style="border-radius:99px">Lanjut →</button>
+    </div>
+  </div>
+
+  <!-- ======= BOTTOM SHEET UNTUK BAHAN (Sesuai Screenshot Asli) ======= -->
+  <div id="backdrop" onclick="closeSheet()"></div>
+  <div id="sheet">
+    <div class="sheet-handle"></div>
+    <div id="sheetBody">
+      <div class="sheet-title">Pilih bahan</div>
+      <input type="text" placeholder="Cari..." style="width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; font-family:inherit">
+      <div id="foodDBList"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
-  // State Data Default
-  let appData = JSON.parse(localStorage.getItem("kalori_keluarga_premium")) || {
+  let appData = JSON.parse(localStorage.getItem("kalori_keluarga_v233")) || {
     target: 725,
     menu: { nama: "Sup Daging", kkalPerMl: 1 },
-    makan: {
-      pagi: { ml: 0, mood: 'biasa' },
-      siang: { ml: 0, mood: 'biasa' },
-      malam: { ml: 0, mood: 'biasa' }
-    },
+    makan: { pagi: { ml: 0, mood: 'biasa' }, siang: { ml: 0, mood: 'biasa' }, malam: { ml: 0, mood: 'biasa' } },
     susuCount: 0
   };
 
+  let tempKcalPorsi = 0; // State sementara waktu wizard dibuka
+
+  const dbBahan = [
+    { nama: "Nasi putih", tipe: "POKOK", detail: "20/sdm • 130/100g", kkal: 130 },
+    { nama: "Nasi tim / bubur", tipe: "POKOK", detail: "12/sdm • 60/100g", kkal: 60 },
+    { nama: "Kentang rebus", tipe: "POKOK", detail: "13/sdm • 85/100g", kkal: 85 },
+    { nama: "Ubi kukus", tipe: "POKOK", detail: "14/sdm • 90/100g", kkal: 90 },
+    { nama: "Mi matang", tipe: "POKOK", detail: "20/sdm • 140/100g", kkal: 140 },
+    { nama: "Telur ayam rebus", tipe: "HEWANI", detail: "80/butir • 155/100g", kkal: 80 }
+  ];
+
   const moodEmojis = { lahap: '😋', biasa: '🙂', gtm: '🙈' };
 
-  function saveData() {
-    localStorage.setItem("kalori_keluarga_premium", JSON.stringify(appData));
-    renderUI();
+  function saveData() { localStorage.setItem("kalori_keluarga_v233", JSON.stringify(appData)); renderUI(); }
+  function switchTab(viewId, btn) { document.querySelectorAll('.view').forEach(el => el.classList.remove('on')); document.querySelectorAll('#tabbar button').forEach(el => el.classList.remove('on')); document.getElementById(viewId).classList.add('on'); btn.classList.add('on'); }
+
+  // --- WIZARD LOGIC ---
+  function openWizard() {
+    tempKcalPorsi = 0; 
+    document.getElementById('wName').value = appData.menu.nama;
+    document.getElementById('wMl').value = 90;
+    document.getElementById('wBahanList').innerHTML = "";
+    document.getElementById('wSameSiang').checked = true;
+    document.getElementById('wSameMalam').checked = true;
+    hitungWiz();
+    document.getElementById('wizard').classList.add('on');
   }
+  function closeWizard() { document.getElementById('wizard').classList.remove('on'); }
 
-  function switchTab(viewId, btn) {
-    document.querySelectorAll('.view').forEach(el => el.classList.remove('on'));
-    document.querySelectorAll('#tabbar button').forEach(el => el.classList.remove('on'));
-    document.getElementById(viewId).classList.add('on');
-    btn.classList.add('on');
-  }
-
-  function editTarget() {
-    const t = prompt("Masukkan target kalori (kkal):", appData.target);
-    if(t) { appData.target = parseInt(t); saveData(); }
-  }
-
-  function susunMenu() {
-    const nm = prompt("Nama masakan panci hari ini:", appData.menu.nama);
-    if(!nm) return;
-    const estKkal = prompt("Estimasi total kalori masakan (kkal):", 300);
-    const totalMl = prompt("Total dibagi berapa ml untuk 3 mangkok?", 270);
-    if(estKkal && totalMl) {
-      appData.menu.nama = nm;
-      appData.menu.kkalPerMl = parseInt(estKkal) / parseInt(totalMl);
-      saveData();
-    }
-  }
-
-  function inputMakan(sesi) {
-    const ml = prompt(`Takaran mangkok ${sesi} (ml):`, appData.makan[sesi].ml);
-    if(ml !== null) {
-      appData.makan[sesi].ml = parseInt(ml) || 0;
-      saveData();
-    }
-  }
-
-  function ubahMood(sesi, ev) {
-    ev.stopPropagation(); // Mencegah klik tombol parent
-    const moods = ['lahap', 'biasa', 'gtm'];
-    let idx = moods.indexOf(appData.makan[sesi].mood);
-    appData.makan[sesi].mood = moods[(idx + 1) % 3];
-    saveData();
-  }
-
-  function toggleSusu(idx) {
-    appData.susuCount = (appData.susuCount === idx) ? idx - 1 : idx;
-    saveData();
-  }
-
-  function resetDay() {
-    if(confirm("Yakin ingin reset data asupan hari ini?")) {
-      appData.makan = { pagi: {ml:0, mood:'biasa'}, siang: {ml:0, mood:'biasa'}, malam: {ml:0, mood:'biasa'} };
-      appData.susuCount = 0;
-      saveData();
-    }
-  }
-
-  function copyWA() {
-    const txt = `📋 Laporan Kalori Zahra
-Target: ${appData.target} kkal
-- Pagi: ${appData.makan.pagi.ml} ml ${moodEmojis[appData.makan.pagi.mood]}
-- Siang: ${appData.makan.siang.ml} ml ${moodEmojis[appData.makan.siang.mood]}
-- Malam: ${appData.makan.malam.ml} ml ${moodEmojis[appData.makan.malam.mood]}
-- Susu: ${appData.susuCount} sesi (${appData.susuCount * 100} kkal)
-Menu Masakan: ${appData.menu.nama}`;
-    navigator.clipboard.writeText(txt);
-    alert("Berhasil disalin ke clipboard!");
-  }
-
-  function renderUI() {
-    // 1. Hitung Kalori
-    const kkalMakan = (appData.makan.pagi.ml + appData.makan.siang.ml + appData.makan.malam.ml) * appData.menu.kkalPerMl;
-    const kkalSusu = appData.susuCount * 100;
-    const totalKkal = Math.round(kkalMakan + kkalSusu);
-    const sisa = Math.max(0, appData.target - totalKkal);
-    const pct = Math.min(100, Math.round((totalKkal / appData.target) * 100));
-
-    // 2. Update Ring & Stats
-    document.getElementById('ringPct').innerText = pct + '%';
-    document.getElementById('kcalIn').innerText = totalKkal;
-    document.getElementById('kcalTarget').innerText = appData.target;
-    document.getElementById('kcalLeft').innerText = sisa;
+  function hitungWiz() {
+    const ml = parseInt(document.getElementById('wMl').value) || 0;
+    const perMl = ml > 0 ? (tempKcalPorsi / ml) : 0;
+    const totalSesi = ml * perMl;
     
-    // Perhitungan Dashoffset SVG CSS buatanmu (Keliling = 377)
-    const offset = 377 - (377 * pct / 100);
-    document.getElementById('ringFg').style.strokeDashoffset = offset;
-    document.getElementById('sessMealHint').innerText = `${Math.round(kkalMakan)} kkal`;
-    document.getElementById('sessMilkHint').innerText = `${appData.susuCount}/6 Sesi`;
-
-    // 3. Render 3 Mangkok (Premium Cards)
-    const sessMeal = document.getElementById('sessMeal');
-    sessMeal.innerHTML = ['pagi', 'siang', 'malam'].map(sesi => {
-      const data = appData.makan[sesi];
-      const isDone = data.ml > 0;
-      const kkal = Math.round(data.ml * appData.menu.kkalPerMl);
-      return `
-        <div class="sess-card ${isDone ? 'done' : ''}" onclick="inputMakan('${sesi}')">
-          <div class="s-t" style="text-transform:capitalize">${sesi}</div>
-          <div class="s-v"><b>${data.ml} ml</b><br>${kkal} kkal</div>
-          <button class="mood-btn" onclick="ubahMood('${sesi}', event)">
-            ${moodEmojis[data.mood]} ${data.mood}
-          </button>
-        </div>`;
-    }).join('');
-
-    // 4. Render Susu SGM Grid (Premium Cards)
-    const sessMilk = document.getElementById('sessMilk');
-    sessMilk.innerHTML = '';
-    for(let i=1; i<=6; i++) {
-      const isDone = i <= appData.susuCount;
-      sessMilk.innerHTML += `
-        <div class="sess-card ${isDone ? 'done' : ''}" onclick="toggleSusu(${i})">
-          <div class="s-t">Sesi ${i}</div>
-          <div class="s-v">5 scoop<br><b>100 kkal</b></div>
-        </div>`;
-    }
-
-    // Set Tanggal Header
-    const tgl = new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'short' });
-    document.getElementById('todayLabel').innerText = tgl;
+    document.getElementById('wTotalKcal').innerText = `≈ ${tempKcalPorsi} kkal`;
+    document.getElementById('wPerMl').innerText = `≈ ${perMl.toFixed(1)} kkal`;
+    document.getElementById('wHintMl').innerText = ml;
+    document.getElementById('wHintTotal').innerText = Math.round(totalSesi);
   }
 
-  // Initial load
-  renderUI();
-</script>
-</body>
-</html>
+  function simpanWizard() {
+    const ml = parseInt(document.getElementById('wMl').value) || 0;
+    const perMl = ml > 0 ? (tempKcalPorsi / ml) : 0;
+    
+    appData.menu.nama = document.getElementById('wName').value || "Menu Masakan";
+    appData.menu.kkalPerMl = perMl;
+    
+    // Set Sesi Pagi
+    appData.makan.pagi.ml = ml;
+    // Set Siang & Malam jika tercentang
+    if(document.getElementById('wSameSiang').checked) appData.makan.siang.ml = ml;
+    if(document.getElementById('wSameMalam').checked) appData.makan.malam.ml = ml;
+
+    saveData();
+    closeWizard();
+  }
+
+  // --- BOTTOM SHEET BAHAN ---
+  function openBahanSheet() {
+    const list = document.getElementById('foodDBList');
+    list.innerHTML = dbBahan.map(b => `
+      <div class="food-item" onclick="pilihBahan('${b.nama}', ${b.kkal}, '${b.tipe}')">
+        <span class="food-cat ${b.tipe === 'POKOK' ? 'cat-pokok' : 'cat-hewani'}">${b.tipe}</span>
+        <span class="f-name">${b.nama}</span>
+        <span class="f-kcal">${b.detail}</span>
+      </div>
+    `).join('');
+    
+    document.getElementById('backdrop').classList.add('on');
+    document.getElementById('sheet').classList.add('on');
+  }
+  function closeSheet() { document.getElementById('backdrop').classList.remove('on'); document.getElementById('sheet').classList.remove('on'); }
+
+  function pilihBahan(nama, kkal, tipe) {
+    tempKcalPorsi += kkal;
+    document.getElementById('wBahanList').innerHTML += `
+      <div style="display:flex; justify-content:space-between; padding:8px 14px; background:#fff; border:1px solid var(--line); border-radius:12px; margin-bottom:6px; font-size:14px">
+        <b>${nama}</b><span style="color:var(--muted)">+${kkal} kkal</span>
+      </div>`;
+    hitungWiz();
+    closeSheet();
+  }
+
+  // --- HOME UI INTERACTION ---
+  function editTarget() { const t = prompt("Target (kk
