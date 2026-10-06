@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kalori Bayi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 antialiased pb-20">
+
+  <!-- Header -->
+  <header class="bg-emerald-600 text-white p-4 sticky top-0 z-30 shadow-md flex justify-between items-center">
+    <div>
+      <h1 class="font-bold text-lg leading-tight">👶 Kalori Bayi</h1>
+      <p class="text-xs text-emerald-100">Pencatat Nutrisi & Kejar BB</p>
+    </div>
+    <div class="text-right">
+      <span class="text-xs bg-emerald-700 px-2 py-1 rounded-full font-mono">v2.3.0</span>
+    </div>
+  </header>
+
+  <main class="p-4 max-w-md mx-auto space-wide">
+
+    <!-- Ringkasan Progres Utama -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="text-sm font-semibold text-gray-700">Progres Kalori Hari Ini</h2>
+        <button onclick="editTargetPrompt()" class="text-xs text-emerald-600 font-medium hover:underline">✏️ Ubah Target</button>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-gray-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path id="progress-circle" class="text-emerald-500" stroke-dasharray="0, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="absolute text-center">
+            <span id="percent-text" class="text-base font-bold text-gray-800">0%</span>
+          </div>
+        </div>
+
+        <div class="flex-1 ml-4 space-y-1">
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-500">Tercatat:</span>
+            <span id="current-kkal" class="font-bold text-emerald-600">0 kkal</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-500">Target:</span>
+            <span id="target-kkal" class="font-bold text-gray-700">725 kkal</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-500">Sisa:</span>
+            <span id="remaining-kkal" class="font-semibold text-amber-600">725 kkal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tombol Susun Menu Hari Ini -->
+    <button onclick="openWizard()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 mb-4">
+      <span>🧭</span> Susun / Edit Rencana Hari Ini
+    </button>
+
+    <!-- Rencana vs Realisasi Makan (ml per sesi) -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
+      <h3 class="text-sm font-bold text-gray-800 mb-3 flex justify-between items-center">
+        <span>🍚 Sesi Makan Utama</span>
+        <span class="text-xs font-normal text-gray-500" id="makan-summary">0 ml • 0 kkal</span>
+      </h3>
+
+      <div class="space-y-3" id="makan-sessions-list">
+        <!-- Render otomatis via JS -->
+      </div>
+    </section>
+
+    <!-- Susu (SGM Gain 100 default) -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
+      <div class="flex justify-between items-center mb-2">
+        <h3 class="text-sm font-bold text-gray-800">🍼 Minum Susu (SGM Gain 100)</h3>
+        <span class="text-xs text-emerald-600 font-medium" id="susu-count">0/6 Sesi</span>
+      </div>
+      <p class="text-xs text-gray-500 mb-3">1 Sesi = 5 scoop + 90ml air = 100 kkal</p>
+
+      <div class="grid grid-cols-3 gap-2" id="susu-grid">
+        <!-- Render otomatis via JS -->
+      </div>
+    </section>
+
+    <!-- Camilan -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-4">
+      <h3 class="text-sm font-bold text-gray-800 mb-3">🍌 Camilan Padat Kalori</h3>
+      <div class="space-y-2" id="camilan-list">
+        <!-- Render otomatis via JS -->
+      </div>
+    </section>
+
+    <!-- Catatan Harian & Ekspor Laporan Dokter -->
+    <section class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
+      <h3 class="text-sm font-bold text-gray-800 mb-2">📝 Catatan & Laporan Dokter</h3>
+      <textarea id="daily-notes" placeholder="Catat respon GTM, tumbuh gigi, atau keluhan hari ini..." class="w-full text-xs p-3 border border-gray-200 rounded-xl mb-3 h-20 focus:outline-none focus:border-emerald-500" oninput="saveDailyNotes()"></textarea>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="copyDoctorText()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-medium py-2.5 px-3 rounded-lg flex items-center justify-center gap-1">
+          📋 Salin Teks WA
+        </button>
+        <button onclick="window.print()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium py-2.5 px-3 rounded-lg flex items-center justify-center gap-1 border border-emerald-200">
+          📄 Cetak / Simpan PDF
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script Aplikasi -->
+  <script>
+    // State Default
+    const DEFAULT_DATA = {
+      targetKkal: 725,
+      menuRencana: {
+        pagi: { name: "Sup Daging & Hati Ayam", ml: 90, kkalPerMl: 1 },
+        siang: { name: "Sup Daging & Hati Ayam", ml: 90, kkalPerMl: 1 },
+        malam: { name: "Sup Daging & Hati Ayam", ml: 90, kkalPerMl: 1 }
+      },
+      realisasi: {
+        pagi: 0,
+        siang: 0,
+        malam: 0,
+        susuCount: 0,
+        camilan: { alpukat: 0, keju: 0 }
+      },
+      notes: ""
+    };
+
+    let appData = JSON.parse(localStorage.getItem("kalori_bayi_v2")) || DEFAULT_DATA;
+
+    function saveData() {
+      localStorage.setItem("kalori_bayi_v2", JSON.stringify(appData));
+      renderDashboard();
+    }
+
+    function renderDashboard() {
+      // Hitung kkal
+      const kkalMakan = (appData.realisasi.pagi * appData.menuRencana.pagi.kkalPerMl) +
+                        (appData.realisasi.siang * appData.menuRencana.siang.kkalPerMl) +
+                        (appData.realisasi.malam * appData.menuRencana.malam.kkalPerMl);
+      
+      const kkalSusu = appData.realisasi.susuCount * 100; // 100 kkal per 90ml / 5 scoop
+      const kkalCamilan = (appData.realisasi.camilan.alpukat * 160) + (appData.realisasi.camilan.keju * 40);
+      
+      const totalKkal = Math.round(kkalMakan + kkalSusu + kkalCamilan);
+      const remaining = Math.max(0, appData.targetKkal - totalKkal);
+      const percent = Math.min(100, Math.round((totalKkal / appData.targetKkal) * 100));
+
+      // UI Circular
+      document.getElementById("percent-text").innerText = percent + "%";
+      document.getElementById("current-kkal").innerText = totalKkal + " kkal";
+      document.getElementById("target-kkal").innerText = appData.targetKkal + " kkal";
+      document.getElementById("remaining-kkal").innerText = remaining + " kkal";
+      document.getElementById("progress-circle").setAttribute("stroke-dasharray", `${percent}, 100`);
+
+      // Makan Sessions
+      const sessions = [
+        { key: "pagi", title: "Pagi 🌅" },
+        { key: "siang", title: "Siang ☀️" },
+        { key: "malam", title: "Malam 🌙" }
+      ];
+
+      const makanContainer = document.getElementById("makan-sessions-list");
+      makanContainer.innerHTML = sessions.map(s => {
+        const targetMl = appData.menuRencana[s.key].ml;
+        const currentMl = appData.realisasi[s.key];
+        const sessionKkal = Math.round(currentMl * appData.menuRencana[s.key].kkalPerMl);
+
+        return `
+          <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center">
+            <div>
+              <div class="text-xs font-bold text-gray-700">${s.title}: ${appData.menuRencana[s.key].name}</div>
+              <div class="text-xs text-gray-500">Target: ${targetMl} ml • Masuk: <span class="font-semibold text-emerald-600">${currentMl} ml</span> (${sessionKkal} kkal)</div>
+            </div>
+            <button onclick="inputMl('${s.key}')" class="bg-emerald-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-sm">
+              + Catat
+            </button>
+          </div>
+        `;
+      }).join("");
+
+      // Susu Grid
+      const susuGrid = document.getElementById("susu-grid");
+      susuGrid.innerHTML = "";
+      for(let i=1; i<=6; i++) {
+        const active = i <= appData.realisasi.susuCount;
+        susuGrid.innerHTML += `
+          <button onclick="toggleSusu(${i})" class="p-2.5 rounded-xl border text-center transition ${
+            active ? 'bg-emerald-500 border-emerald-600 text-white font-bold' : 'bg-gray-50 border-gray-200 text-gray-600'
+          }">
+            <div class="text-xs">Sesi ${i}</div>
+            <div class="text-[10px] opacity-80">100 kkal</div>
+          </button>
+        `;
+      }
+      document.getElementById("susu-count").innerText = `${appData.realisasi.susuCount}/6 Sesi`;
+
+      // Camilan
+      const camilanList = document.getElementById("camilan-list");
+      camilanList.innerHTML = `
+        <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 flex justify-between items-center text-xs">
+          <div>
+            <div class="font-bold text-gray-700">🥑 Alpukat + Kuning Telur</div>
+            <div class="text-gray-500">1 Porsi = ±160 kkal • Tercatat: ${appData.realisasi.camilan.alpukat} porsi</div>
+          </div>
+          <div class="flex gap-1">
+            <button onclick="addCamilan('alpukat', 1)" class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold">+</button>
+            <button onclick="addCamilan('alpukat', -1)" class="bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg font-bold">↺</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("daily-notes").value = appData.notes || "";
+    }
+
+    function inputMl(key) {
+      const val = prompt(`Masukkan jumlah ml makanan (${key}) yang dikonsumsi:`, appData.realisasi[key] || appData.menuRencana[key].ml);
+      if (val !== null) {
+        appData.realisasi[key] = parseInt(val) || 0;
+        saveData();
+      }
+    }
+
+    function toggleSusu(index) {
+      appData.realisasi.susuCount = (appData.realisasi.susuCount === index) ? index - 1 : index;
+      saveData();
+    }
+
+    function addCamilan(type, change) {
+      appData.realisasi.camilan[type] = Math.max(0, (appData.realisasi.camilan[type] || 0) + change);
+      saveData();
+    }
+
+    function editTargetPrompt() {
+      const t = prompt("Set Target Kalori Harian (kkal):", appData.targetKkal);
+      if (t) {
+        appData.targetKkal = parseInt(t) || 725;
+        saveData();
+      }
+    }
+
+    function saveDailyNotes() {
+      appData.notes = document.getElementById("daily-notes").value;
+      localStorage.setItem("kalori_bayi_v2", JSON.stringify(appData));
+    }
+
+    function openWizard() {
+      const name = prompt("Nama Masakan Hari Ini:", appData.menuRencana.pagi.name);
+      if (!name) return;
+      const pagiMl = parseInt(prompt("Takaran Mangkok Pagi (ml):", appData.menuRencana.pagi.ml)) || 90;
+      const siangMl = parseInt(prompt("Takaran Mangkok Siang (ml):", appData.menuRencana.siang.ml)) || 90;
+      const malamMl = parseInt(prompt("Takaran Mangkok Malam (ml):", appData.menuRencana.malam.ml)) || 90;
+      const estKkalTotal = parseInt(prompt("Perkiraan Total Kalori Masakan 1 Panci (kkal):", 300)) || 300;
+
+      const kkalPerMl = estKkalTotal / (pagiMl + siangMl + malamMl);
+
+      appData.menuRencana = {
+        pagi: { name, ml: pagiMl, kkalPerMl },
+        siang: { name, ml: siangMl, kkalPerMl },
+        malam: { name, ml: malamMl, kkalPerMl }
+      };
+      saveData();
+    }
+
+    function copyDoctorText() {
+      const txt = `📋 LAPORAN KALORI BAYI
+Target: ${appData.targetKkal} kkal
+Status Asupan:
+- Pagi: ${appData.realisasi.pagi} ml (${appData.menuRencana.pagi.name})
+- Siang: ${appData.realisasi.siang} ml
+- Malam: ${appData.realisasi.malam} ml
+- Susu SGM Gain: ${appData.realisasi.susuCount}x (${appData.realisasi.susuCount * 100} kkal)
+- Camilan Alpukat: ${appData.realisasi.camilan.alpukat} porsi
+Catatan: ${appData.notes || '-'}`;
+
+      navigator.clipboard.writeText(txt);
+      alert("Teks Laporan Berhasil Disalin!");
+    }
+
+    // Inisialisasi awal
+    renderDashboard();
+  </script>
+</body>
+</html>
