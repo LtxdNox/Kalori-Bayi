@@ -48,7 +48,6 @@
       </div>
 
       <div class="flex items-center gap-5">
-        <!-- Circular Progress SVG -->
         <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
           <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
             <path class="text-slate-100" stroke-width="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -73,9 +72,9 @@
       </div>
     </section>
 
-    <!-- Tombol Atur Menu Masakan Pancai -->
+    <!-- Tombol Atur Menu Masakan -->
     <button onclick="openWizard()" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-[0.99] text-white font-bold py-3.5 px-4 rounded-2xl shadow-md transition flex items-center justify-center gap-2">
-      <span class="text-base">🍳</span> Susun Menu Masakan & Porsi Pancik
+      <span class="text-base">🍳</span> Susun Menu Masakan & Porsi
     </button>
 
     <!-- Sesi Makan Utama (3 Mangkok) -->
@@ -87,9 +86,7 @@
         <span class="text-xs font-semibold text-slate-400" id="makan-summary">0 ml • 0 kkal</span>
       </div>
 
-      <div class="space-y-3" id="makan-sessions-list">
-        <!-- Render Otomatis via JS -->
-      </div>
+      <div class="space-y-3" id="makan-sessions-list"></div>
     </section>
 
     <!-- SGM Gain 100 Tracker -->
@@ -102,9 +99,7 @@
       </div>
       <p class="text-[11px] text-slate-400 mb-3">Takaran: 5 scoop + 90ml air = 100ml / 100 kkal</p>
 
-      <div class="grid grid-cols-3 gap-2.5" id="susu-grid">
-        <!-- Render Otomatis via JS -->
-      </div>
+      <div class="grid grid-cols-3 gap-2.5" id="susu-grid"></div>
     </section>
 
     <!-- Camilan Padat Kalori -->
@@ -112,9 +107,7 @@
       <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
         <span>🥑</span> Camilan Padat Kalori
       </h3>
-      <div class="space-y-2.5" id="camilan-list">
-        <!-- Render Otomatis via JS -->
-      </div>
+      <div class="space-y-2.5" id="camilan-list"></div>
     </section>
 
     <!-- Catatan & Laporan Dokter -->
@@ -136,7 +129,6 @@
 
   </main>
 
-  <!-- Script Logic v2.3.1 -->
   <script>
     const DEFAULT_DATA = {
       targetKkal: 725,
@@ -163,7 +155,6 @@
     }
 
     function renderDashboard() {
-      // Perhitungan Kalori
       const kkalPagi = appData.realisasi.pagi.ml * appData.menuRencana.pagi.kkalPerMl;
       const kkalSiang = appData.realisasi.siang.ml * appData.menuRencana.siang.kkalPerMl;
       const kkalMalam = appData.realisasi.malam.ml * appData.menuRencana.malam.kkalPerMl;
@@ -177,7 +168,6 @@
       const remaining = Math.max(0, appData.targetKkal - totalKkal);
       const percent = Math.min(100, Math.round((totalKkal / appData.targetKkal) * 100));
 
-      // UI Ring
       document.getElementById("percent-text").innerText = percent + "%";
       document.getElementById("current-kkal").innerText = totalKkal + " kkal";
       document.getElementById("target-kkal-display").innerText = appData.targetKkal + " kkal";
@@ -185,7 +175,6 @@
       document.getElementById("progress-circle").setAttribute("stroke-dasharray", `${percent}, 100`);
       document.getElementById("makan-summary").innerText = `${totalMakanMl} ml • ${Math.round(totalMakanKkal)} kkal`;
 
-      // Sesi Makan Utama
       const sessions = [
         { key: 'pagi', title: 'Pagi 🌅' },
         { key: 'siang', title: 'Siang ☀️' },
@@ -211,7 +200,6 @@
               </button>
             </div>
             
-            <!-- Selector Mood v2.3.1 -->
             <div class="flex items-center gap-1.5 pt-1 border-t border-slate-200/60">
               <span class="text-[10px] text-slate-400 font-medium mr-1">Respon:</span>
               <button onclick="setMood('${s.key}', 'lahap')" class="px-2 py-1 rounded-lg text-[11px] font-medium transition ${item.mood === 'lahap' ? 'bg-emerald-500 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200'}">😋 Lahap</button>
@@ -222,7 +210,6 @@
         `;
       }).join("");
 
-      // Susu Grid
       const susuGrid = document.getElementById("susu-grid");
       susuGrid.innerHTML = "";
       for(let i=1; i<=6; i++) {
@@ -240,7 +227,6 @@
       }
       document.getElementById("susu-count").innerText = `${appData.realisasi.susuCount}/6 Sesi`;
 
-      // Camilan
       const camilanContainer = document.getElementById("camilan-list");
       camilanContainer.innerHTML = `
         <div class="p-3.5 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center text-xs">
@@ -342,88 +328,6 @@ Catatan Dokter: ${appData.notes || '-'}`;
       alert("Teks Laporan Berhasil Disalin!");
     }
 
-    // Initialize
-    renderDashboard();
-  </script>
-</body>
-</html>
- ±160 kkal • Tercatat: ${appData.realisasi.camilan.alpukat} porsi</div>
-          </div>
-          <div class="flex gap-1">
-            <button onclick="addCamilan('alpukat', 1)" class="bg-emerald-600 text-white px-2.5 py-1 rounded-lg font-bold">+</button>
-            <button onclick="addCamilan('alpukat', -1)" class="bg-gray-200 text-gray-700 px-2.5 py-1 rounded-lg font-bold">↺</button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById("daily-notes").value = appData.notes || "";
-    }
-
-    function inputMl(key) {
-      const val = prompt(`Masukkan jumlah ml makanan (${key}) yang dikonsumsi:`, appData.realisasi[key] || appData.menuRencana[key].ml);
-      if (val !== null) {
-        appData.realisasi[key] = parseInt(val) || 0;
-        saveData();
-      }
-    }
-
-    function toggleSusu(index) {
-      appData.realisasi.susuCount = (appData.realisasi.susuCount === index) ? index - 1 : index;
-      saveData();
-    }
-
-    function addCamilan(type, change) {
-      appData.realisasi.camilan[type] = Math.max(0, (appData.realisasi.camilan[type] || 0) + change);
-      saveData();
-    }
-
-    function editTargetPrompt() {
-      const t = prompt("Set Target Kalori Harian (kkal):", appData.targetKkal);
-      if (t) {
-        appData.targetKkal = parseInt(t) || 725;
-        saveData();
-      }
-    }
-
-    function saveDailyNotes() {
-      appData.notes = document.getElementById("daily-notes").value;
-      localStorage.setItem("kalori_bayi_v2", JSON.stringify(appData));
-    }
-
-    function openWizard() {
-      const name = prompt("Nama Masakan Hari Ini:", appData.menuRencana.pagi.name);
-      if (!name) return;
-      const pagiMl = parseInt(prompt("Takaran Mangkok Pagi (ml):", appData.menuRencana.pagi.ml)) || 90;
-      const siangMl = parseInt(prompt("Takaran Mangkok Siang (ml):", appData.menuRencana.siang.ml)) || 90;
-      const malamMl = parseInt(prompt("Takaran Mangkok Malam (ml):", appData.menuRencana.malam.ml)) || 90;
-      const estKkalTotal = parseInt(prompt("Perkiraan Total Kalori Masakan 1 Panci (kkal):", 300)) || 300;
-
-      const kkalPerMl = estKkalTotal / (pagiMl + siangMl + malamMl);
-
-      appData.menuRencana = {
-        pagi: { name, ml: pagiMl, kkalPerMl },
-        siang: { name, ml: siangMl, kkalPerMl },
-        malam: { name, ml: malamMl, kkalPerMl }
-      };
-      saveData();
-    }
-
-    function copyDoctorText() {
-      const txt = `📋 LAPORAN KALORI BAYI
-Target: ${appData.targetKkal} kkal
-Status Asupan:
-- Pagi: ${appData.realisasi.pagi} ml (${appData.menuRencana.pagi.name})
-- Siang: ${appData.realisasi.siang} ml
-- Malam: ${appData.realisasi.malam} ml
-- Susu SGM Gain: ${appData.realisasi.susuCount}x (${appData.realisasi.susuCount * 100} kkal)
-- Camilan Alpukat: ${appData.realisasi.camilan.alpukat} porsi
-Catatan: ${appData.notes || '-'}`;
-
-      navigator.clipboard.writeText(txt);
-      alert("Teks Laporan Berhasil Disalin!");
-    }
-
-    // Inisialisasi awal
     renderDashboard();
   </script>
 </body>
